@@ -27,7 +27,7 @@ int* creacion(int n){
     return mapa;
 }
 
-void mostrar_tabla(int *arreglo){
+void mostrar_tabla_vista(int *arreglo){
     for(int i=1; i<50; i++){
         printf("%d", arreglo[i - 1]);
         if (i % 7 == 0){
