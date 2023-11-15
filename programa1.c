@@ -18,8 +18,67 @@ typedef struct {
 } Posicion;
 
 // Funciones
+int* creacion(int n){
+    int *mapa;
+    mapa = (int*)malloc(n * n *sizeof(int));
+    for(int i=0;i < n*n;i++){
+        mapa[i] = 0;
+    }
+    return mapa;
+}
 
-//hola
+void mostrar_tabla(int *arreglo){
+    for(int i=1; i<50; i++){
+        printf("%d", arreglo[i - 1]);
+        if (i % 7 == 0){
+            printf("\n\n");
+        }
+        else{
+            printf("   ");
+        }
+    }
+}
+
+void mostrar(int *arreglo,int cantidad){
+    for(int i=0;i < cantidad;i++){
+        printf("%d ",arreglo[i]);
+    }
+}
+
+int* append(int *arreglo,int cantidad,int n_elemento,int ubicacion){
+    int *salida;
+    int total = cantidad + 1;
+    salida = (int *)malloc(sizeof(int)*(total));
+    if (ubicacion > cantidad){
+        ubicacion = cantidad;
+    }
+    for(int i=0;i < ubicacion;i++){
+        salida[i] = arreglo[i];
+    }
+    salida[ubicacion] = n_elemento;
+    for(int i=ubicacion;i < cantidad;i++){
+        salida[i+1] = arreglo[i];
+    }
+    free(arreglo);
+    return salida;
+}
+
+int* eliminar(int *arreglo,int cantidad,int ubicacion){
+    int *salida;
+    int total = cantidad + 1;
+    salida = (int *)malloc(sizeof(int)*(total));
+    if (ubicacion > cantidad){
+        ubicacion = cantidad;
+    }
+    for(int i=0;i < ubicacion;i++){
+        salida[i] = arreglo[i];
+    }
+    for(int i=ubicacion;i < cantidad;i++){
+        salida[i] = arreglo[i+1];
+    }
+    free(arreglo);
+    return salida;
+}
 
 void moverPersonaje(Personaje *personaje, Posicion *posicion, int direccion) {
     // Implementa el movimiento del personaje
