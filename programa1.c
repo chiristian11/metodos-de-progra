@@ -19,6 +19,8 @@ typedef struct {
 
 // Funciones
 
+//hola
+
 void moverPersonaje(Personaje *personaje, Posicion *posicion, int direccion) {
     // Implementa el movimiento del personaje
 }
