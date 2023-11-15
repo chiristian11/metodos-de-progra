@@ -27,14 +27,14 @@ int* creacion(int n){
     return mapa;
 }
 
-void mostrar_tabla_vista(int *arreglo){
-    for(int i=1; i<50; i++){
+void mostrar_tabla_vista(int *arreglo, int multiplo){
+    for(int i=1; i<(multiplo * multiplo + 1); i++){
         printf("%d", arreglo[i - 1]);
-        if (i % 7 == 0){
+        if (i % multiplo == 0){
             printf("\n\n");
         }
         else{
-            printf("   ");
+            printf(" ");
         }
     }
 }
