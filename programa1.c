@@ -2,7 +2,19 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
+//funcion para agregar los logs a cada accion del programa
+void logs(char *accion){
+	time_t tiempoActual;
+	struct tm *infotiempo;
+	time(&tiempoActual);
+	infotiempo = localtime(&tiempoActual);
+	
+	char filename[1000];
+	snprintf(filename,sizeof (filename),"%04d%02d%02d_%02d%02d.txt",infotiempo->tm_year + 1900,infotiempo->tm_mon + 1,infotiempo->tm_mday,infotiempo->tm_hour,infotiempo->tm_min);
+	FILE *file = fopen(filename,"a");
+	fprintf(file,"[%04d-%02d-%02d %02d:%02d] %s\n",infotiempo->tm_year + 1900,infotiempo->tm_mon + 1,infotiempo->tm_mday,infotiempo->tm_hour,infotiempo->tm_min,accion);
+	fclose(file);
+}
 // Definiciones de estructuras
 typedef struct {
     int salud;
