@@ -277,7 +277,7 @@ void dificultad(char **mapa,int tipo,int enemigov,int enemigol){
             letra3 = 'L';
             }
           }
-        dificultad_dificil(mapa, tipo,letra,letra2,letra3);
+        dificultad_dificil(mapa,tipo,letra,letra2,letra3);
         }
     return;
 }
