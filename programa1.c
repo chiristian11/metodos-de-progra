@@ -480,14 +480,14 @@ void disparar(personaje *atacante, personaje *defensor, arma *arma_elegida) {
 	}
 }
 
-void ubicar(int **mapa,int **minimap,int fila,int columna){
+void ubicar_mostrar(int **mapa,int **minimap,int fila,int columna){
 	int aux = columna - 3;
 	fila = fila - 3;
 	for(int i = 0;i < 7;i++){
 		columna = aux;
 		for(int j = 0;j < 7;j++){
 			if(fila < 0 || fila > 49 || columna < 0 || columna > 49){
-				minimap[i][j] = 1; // Alerta, cambiar a numero de pared c
+				minimap[i][j] = -3;
 			}
 			else{
 				minimap[i][j] = mapa[fila][columna];
@@ -601,23 +601,23 @@ int movimiento(int **mapa,int **minimap,int *fila,int fila_max,int *columna,int 
 	switch (mov){
 		case 'w':
 		mover_arriba(mapa,fila,columna,&energia);
-		ubicar(mapa,minimap,*fila,*columna);
+		ubicar_mostrar(mapa,minimap,*fila,*columna);
 		break;
 		case 'a':
 		mover_izquierda(mapa,fila,columna,&energia);
-		ubicar(mapa,minimap,*fila,*columna);
+		ubicar_mostrar(mapa,minimap,*fila,*columna);
 		break;
 		case 's':
 		mover_abajo(mapa,fila,columna,fila_max,&energia);
-		ubicar(mapa,minimap,*fila,*columna);
+		ubicar_mostrar(mapa,minimap,*fila,*columna);
 		break;
 		case 'd':
 		mover_derecha(mapa,fila,columna,columna_max,&energia);
-		ubicar(mapa,minimap,*fila,*columna);
+		ubicar_mostrar(mapa,minimap,*fila,*columna);
 		break;
 		case 'q':
 		energia = energia - 1;
-		ubicar(mapa,minimap,*fila,*columna);
+		ubicar_mostrar(mapa,minimap,*fila,*columna);
 		break;
 		case '\n':
 		printf("le falta gastar %d energia",energia);
@@ -778,7 +778,7 @@ int main() {
 
 	int **minimap;
 	minimap = mapa_num(7, 7);
-	ubicar(mapa,minimap,fila_local,columna_local);
+	ubicar_mostrar(mapa,minimap,fila_local,columna_local);
 	movimiento(mapa,minimap, &fila_local, fila, &columna_local, columna, 200); //el ultimo valor es la cantidad de movimientos que se pueden hacer
 	// aqui termina lo que realize
     
