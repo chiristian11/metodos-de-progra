@@ -338,7 +338,7 @@ void dificultad(char **mapa,int tipo,int enemigov,int enemigol){
 				letra2 = 'E';
 				letra3 = 'L';
 				break;
-				default;
+				default:
 				letra2 = 'L';
 				letra3 = 'E';
 				break;
