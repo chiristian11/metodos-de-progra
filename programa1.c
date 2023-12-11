@@ -23,7 +23,7 @@ typedef struct {
 	char arma[20];
 	int municion;
 	// Otras propiedades del personaje
-} Personaje;
+} personaje;
 
 typedef struct {
 	int balas;
