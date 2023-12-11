@@ -700,22 +700,22 @@ int* eliminar(int *arreglo,int cantidad,int ubicacion){
 }
 */
 
-void disparar(Personaje *atacante, Personaje *objetivo) {
+void disparar(personaje *atacante, personaje *objetivo) {
     // Implementa la lógica de disparo
 }
 
-void recargar(Personaje *personaje) {
+void recargar(personaje *personaje) {
     // Implementa la recarga de munición
 }
 
-void usarObjeto(Personaje *personaje, char *objeto) {
+void usarObjeto(personaje *personaje, char *objeto) {
     // Implementa el uso de objetos
 }
 
 // Función principal
 int main() {
-	Personaje jugador;
-	Personaje enemigo;
+	personaje jugador;
+	personaje enemigo;
 
 	// por cambiar char armas --> int armas
 	//personajes
