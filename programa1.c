@@ -20,7 +20,8 @@ typedef struct {
 	int salud;
 	int salud_maxima;
 	int movimientos;
-	char arma[20];
+	int arma1;
+	int arma2;
 	int municion;
 	// Otras propiedades del personaje
 } personaje;
