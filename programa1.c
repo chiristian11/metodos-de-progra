@@ -27,15 +27,15 @@ typedef struct {
 
 typedef struct {
 	int balas;
-	int daño;
+	int agravio;
 	int cargador;  //el cargador se va a 0 si se elige disparar 1 vez
 } arma;
 
 typedef struct {
-	int daño
-	int cura
-	int cantidad
-	int movilidad
+	int agravio;
+	int cura;
+	int cantidad;
+	int movilidad;
 } objeto;
 
 // Funciones
