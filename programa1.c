@@ -467,6 +467,57 @@ int** transformada(char** mapa,int fila,int columna){
 	return mapa_int;
 }
 
+void colocar_personajes(int **mapa,int fila_max,int columna_max){
+	int fila_aux = fila_max;
+	int columna_aux = columna_max;
+	localizar(mapa,&fila_aux,&columna_aux,1);
+	if(fila_aux != fila_max && columna_aux != 0){
+		mapa[fila_aux - 1][columna_aux + 1] = 2;
+		mapa[fila_aux + 1][columna_aux + 1] = 3;
+		mapa[fila_aux + 1][columna_aux - 1] = 4;
+		mapa[fila_aux - 1][columna_aux - 1] = 5;
+	}
+	fila_aux = fila_max;
+	columna_aux = columna_max;
+	localizar(mapa,&fila_aux,&columna_aux,6);
+	if(fila_aux != fila_max && columna_aux != 0){
+		mapa[fila_aux - 1][columna_aux + 1] = 7;
+		mapa[fila_aux + 1][columna_aux + 1] = 8;
+		mapa[fila_aux + 1][columna_aux - 1] = 9;
+		mapa[fila_aux - 1][columna_aux - 1] = 10;
+	}
+	fila_aux = fila_max;
+	columna_aux = columna_max;
+	localizar(mapa,&fila_aux,&columna_aux,11);
+	if(fila_aux != fila_max && columna_aux != 0){
+		mapa[fila_aux - 1][columna_aux + 1] = 12;
+		mapa[fila_aux + 1][columna_aux + 1] = 13;
+		mapa[fila_aux + 1][columna_aux - 1] = 14;
+		mapa[fila_aux - 1][columna_aux - 1] = 15;
+	}
+	return;
+}
+
+int** crear_mapa(int tipo,int *fila_max,int *columna_max, int **mapa){
+	char **mapabase;
+	int dificultad;
+	printf("Eliga cuantos equipos enemigos quieres en el mapa: ");
+	scanf("%d",&dificultad);
+	if(dificultad > 1){
+		printf("\nHabran 2 equipos enemigos... destruyelos");
+		mapabase = lector(tipo,fila_max,columna_max,2);
+	}
+	else{
+		printf("\nHabra 1 equipo enemigo... destruyelo");
+		mapabase = lector(tipo,fila_max,columna_max,1);
+	}
+
+	mapa = transformada(mapabase,*fila_max,*columna_max);
+	colocar_personajes(mapa,*fila_max,*columna_max);
+	liberar_memoria_c(mapabase,*fila_max);
+	return mapa;
+}
+
 void disparar(personaje *atacante, personaje *defensor, arma *arma_elegida) {
 	if ((*arma_elegida).balas > 0) {
 		(*defensor).salud = (*defensor).salud - (*arma_elegida).agravio;
@@ -749,32 +800,16 @@ int main() {
 	// Inicializa las propiedades de los personajes y posiciones
 	// Aqui empieza lo que realize
 	srand(time(NULL));
-	char **mapabase;
+	int **mapa;
 	int numero_alea = 1; // eleccion de mapa
 	int fila;
 	int columna;
-	int dificultad;
-	printf("Eliga cuantos equipos enemigos quieres en el mapa: ");
-	scanf("%d",&dificultad);
-	if(dificultad > 1){
-		printf("\nHabran 2 equipos enemigos... destruyelos");
-		mapabase = lector(numero_alea,&fila,&columna,2);
-	}
-	else{
-		printf("\nHabra 1 equipo enemigo... destruyelo");
-		mapabase = lector(numero_alea,&fila,&columna,1);
-	}
-    
-	salto(1);
 
-	int **mapa;
-	mapa = transformada(mapabase, fila, columna);
-
-	salto(5);
+	mapa = crear_mapa(numero_alea, &fila, &columna, mapa);
 
 	int fila_local = fila;
 	int columna_local = columna;
-	localizar(mapa, &fila_local, &columna_local, 9);// 9 es el personaje a mover
+	localizar(mapa, &fila_local, &columna_local, 1); // el entero es el personaje a mover
 
 	int **minimap;
 	minimap = mapa_num(7, 7);
