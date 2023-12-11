@@ -718,17 +718,17 @@ int main() {
 	// por cambiar char armas --> int armas
 	//personajes
 
-	personaje sniper = {1000,1000,4,"francotirador","pistola",3};
-	
-	personaje ranger = {1500,1500,5,"fusil","pistola",3};
-	
-	personaje grenadier = {1200,1200,4,"escopeta","pistola",3};
-	
-	personaje specialist = {1000,1000,4,"francotirador","pistola",3};
-	
-	personaje cannibal = {1200,1200,4,"escopeta","pistola",3};
-	
-	personaje volatilee = {950,950,4,"ametralladora","espada",3};
+	personaje sniper = {1000,1000,4,3,1,3};
+
+	personaje ranger = {1500,1500,5,4,6,3};
+
+	personaje grenadier = {1200,1200,4,2,1,3};
+
+	personaje specialist = {1000,1000,4,3,1,3};
+
+	personaje cannibal = {1200,1200,4,2,1,3};
+
+	personaje volatilee = {950,950,4,5,6,3};
 
 	//armas, forma = {cant balas, daño}
 	arma francotirador={2,400};
