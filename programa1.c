@@ -467,7 +467,7 @@ int** transformada(char** mapa,int fila,int columna){
 
 void disparar(personaje *atacante, personaje *defensor, arma *arma_elegida) {
 	if ((*arma_elegida).balas > 0) {
-		(*defensor).salud = (*defensor).salud - (*arma_elegida).daño
+		(*defensor).salud = (*defensor).salud - (*arma_elegida).agravio
 		(*arma_elegida).balas=(*arma_elegida).balas - (1);
 		
 		if ((*defensor).salud <=0) {
@@ -699,10 +699,6 @@ int* eliminar(int *arreglo,int cantidad,int ubicacion){
 	return salida;
 }
 */
-
-void disparar(personaje *atacante, personaje *objetivo) {
-    // Implementa la lógica de disparo
-}
 
 void recargar(personaje *personaje) {
     // Implementa la recarga de munición
