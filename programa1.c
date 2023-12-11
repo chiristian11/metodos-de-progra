@@ -360,6 +360,7 @@ void dificultad(char **mapa,int tipo,int enemigov,int enemigol){
 	}
 	return;
 }
+
 void leermapa(FILE* fmapa, char** mapa, int fila,int columna){
 	// lee los elementos de una matriz de caracteres que esten en un archivo
 	for (int i = 0; i < fila; i++){
