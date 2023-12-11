@@ -635,7 +635,7 @@ int main() {
     // Aqui empieza lo que realize
     srand(time(NULL));
     char **mapabase;
-    int numero_alea = 1;
+    int numero_alea = 1; // eleccion de mapa
     int fila;
     int columna;
     int dificultad;
