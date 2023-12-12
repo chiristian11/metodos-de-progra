@@ -857,7 +857,6 @@ int main() {
 		}
 		// Actualizar el estado del juego (turno del enemigo, verificar victoria/derrota, etc.)
 	}
-	liberar_memoria_c(mapabase, fila);
 	liberar_memoria_n(mapa, columna);
 	liberar_memoria_n(minimap, 7);
 	return 0;
