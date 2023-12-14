@@ -1123,7 +1123,7 @@ int main() {
 	arma fusil = {4,200};
 	arma escopeta = {3,600};
 	arma ametralladora = {4,300};
-	arma espada ={5000,3000};
+	arma espada ={5000,300};
 
 	// cambiar el parametro cantidad
 	//objetos, forma = {daño, vida, cantidad, velocidad por cuadro}
