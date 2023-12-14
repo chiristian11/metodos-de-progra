@@ -547,7 +547,7 @@ int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
   int i = 0;
   int* l = (int*)malloc(sizeof(int) * 15);
   while(i <= 5){
-    printf("Eliga al %d personaje",i);
+    printf("Eliga al %d personaje\n",i);
     printf("1.- Sniper\n");
     printf("2.- Ranger\n");
     printf("3.- Grenadier\n");
@@ -837,24 +837,27 @@ int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
   return estado;
 }
 
-int** crear_mapa(int tipo,int *fila_max,int *columna_max, int **mapa){
-	char **mapabase;
-	int dificultad;
-	printf("Eliga cuantos equipos enemigos quieres en el mapa: ");
-	scanf("%d",&dificultad);
-	if(dificultad > 1){
-		printf("\nHabran 2 equipos enemigos... destruyelos");
-		mapabase = lector(tipo,fila_max,columna_max,2);
-	}
-	else{
-		printf("\nHabra 1 equipo enemigo... destruyelo");
-		mapabase = lector(tipo,fila_max,columna_max,1);
-	}
+int** crear_mapa(int tipo,int *fila_max,int *columna_max,int *estado,int **mapa){
+  char **mapabase;
 
-	mapa = transformada(mapabase,*fila_max,*columna_max);
-	colocar_personajes(mapa,*fila_max,*columna_max);
-	liberar_memoria_c(mapabase,*fila_max);
-	return mapa;
+  estado = estado_partida(mapa,estado,*fila_max,*columna_max);
+  
+  int dificultad;
+  printf("Eliga cuantos equipos enemigos quieres en el mapa: ");
+  scanf("%d",&dificultad);
+  if(dificultad > 1){
+    printf("\nHabran 2 equipos enemigos... destruyelos");
+    mapabase = lector(tipo,fila_max,columna_max,2);
+  }
+  else{
+    printf("\nHabra 1 equipo enemigo... destruyelo");
+    mapabase = lector(tipo,fila_max,columna_max,1);
+  }
+
+  mapa = transformada(mapabase,*fila_max,*columna_max);
+  colocar_personajes(mapa,*fila_max,*columna_max);
+  liberar_memoria_c(mapabase,*fila_max);
+  return mapa;
 }
 
 void disparar(personaje *atacante, personaje *defensor, arma *arma_elegida) {
