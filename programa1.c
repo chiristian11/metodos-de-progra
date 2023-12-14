@@ -59,7 +59,7 @@ typedef struct {
 typedef struct {
 	int balas;
 	int agravio;
-	int cargador;  //el cargador se va a 0 si se elige disparar 1 vez
+	int balas_maxima;  //el cargador se va a 0 si se elige disparar 1 vez
 } arma;
 
 typedef struct {
