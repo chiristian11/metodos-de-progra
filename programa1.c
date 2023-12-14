@@ -544,7 +544,7 @@ arma espada ={5000,300,5000};
 
 int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
   int personaje;
-  int i = 0;
+  int i = 1;
   int* l = (int*)malloc(sizeof(int) * 15);
   while(i <= 5){
     printf("Eliga al %d personaje\n",i);
@@ -556,7 +556,7 @@ int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
     printf("6.- Volatile\n");
     printf("cualquier otro numero implicara que el personaje estara sin vida\n");
     scanf("%d",&personaje);
-    l[i] = personaje;
+    l[i - 1] = personaje;
   }
 
   int fila_aux = fila_max;
