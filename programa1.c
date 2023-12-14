@@ -557,6 +557,7 @@ int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
     printf("cualquier otro numero implicara que el personaje estara sin vida\n");
     scanf("%d",&personaje);
     l[i - 1] = personaje;
+    i = i + 1;
   }
 
   int fila_aux = fila_max;
