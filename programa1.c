@@ -528,6 +528,301 @@ void colocar_personajes(int **mapa,int fila_max,int columna_max){
 	return;
 }
 
+int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
+  int personaje;
+  int i = 0;
+  int* l = (int*)malloc(sizeof(int) * 15);
+  while(i <= 5){
+    printf("Eliga al %d personaje",i);
+    printf("1.- Sniper\n");
+    printf("2.- Ranger\n");
+    printf("3.- Grenadier\n");
+    printf("4.- Specialist\n");
+    printf("5.- Cannibal\n");
+    printf("6.- Volatile\n");
+    printf("cualquier otro numero implicara que el personaje estara sin vida\n");
+    scanf("%d",&personaje);
+    l[i] = personaje;
+  }
+
+  int fila_aux = fila_max;
+  int columna_aux = columna_max;
+  localizar(mapa,&fila_aux,&columna_aux,6);
+  if(fila_aux != fila_max && columna_aux != 0){
+    int n = rand() % 3 + 1;
+    switch(n){
+      case 1:
+        l[5] = 2;
+        l[6] = 4;
+        l[7] = 4;
+        l[8] = 1;
+        l[9] = 5;
+      break;
+      case 2:
+        l[5] = 2;
+        l[6] = 4;
+        l[7] = 6;
+        l[8] = 6;
+        l[9] = 1;
+      break;
+      default:
+        l[5] = 3;
+        l[6] = 5;
+        l[7] = 5;
+        l[8] = 1;
+        l[9] = 4;
+      break;
+    }
+  }
+  else{
+    l[5] = 0;
+    l[6] = 0;
+    l[7] = 0;
+    l[8] = 0;
+    l[9] = 0;
+  }
+
+  fila_aux = fila_max;
+  columna_aux = columna_max;
+  localizar(mapa,&fila_aux,&columna_aux,11);
+  if(fila_aux != fila_max && columna_aux != 0){
+    int n = rand() % 3 + 1;
+    switch(n){
+      case 1:
+        l[10] = 5;
+        l[11] = 4;
+        l[12] = 2;
+        l[13] = 1;
+        l[14] = 3;
+      break;
+      case 2:
+        l[10] = 6;
+        l[11] = 6;
+        l[12] = 3;
+        l[13] = 3;
+        l[14] = 2;
+      break;
+      default:
+        l[10] = 3;
+        l[11] = 4;
+        l[12] = 2;
+        l[13] = 4;
+        l[14] = 3;
+      break;
+    }
+  }
+  else{
+    l[10] = 0;
+    l[11] = 0;
+    l[12] = 0;
+    l[13] = 0;
+    l[14] = 0;
+  }
+  
+  int aux;
+  estado = (int*)malloc(sizeof(int) * 196);
+  estado[0] = 0;
+  i = 0;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+  for(int j = 0; j < 15;j++){
+    aux = i * 13 + 1;
+    switch(l[j]){
+      case 1:
+        estado[aux] = l[j];
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        break;
+        case 2:
+        estado[aux] = l[j];
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        break;
+        case 3:
+        estado[aux] = l[j];
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        aux ++;
+        estado[aux] = 0;
+        break;
+        case 4:
+          estado[aux] = l[j];
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+        break;
+        case 5:
+          estado[aux] = l[j];
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+        break;
+        case 6:
+          estado[aux] = l[j];
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+        break;
+        default:
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+          aux ++;
+          estado[aux] = 0;
+        break;
+        }
+      i = i + 1;
+      }
+  
+  return estado;
+}
+
 int** crear_mapa(int tipo,int *fila_max,int *columna_max, int **mapa){
 	char **mapabase;
 	int dificultad;
