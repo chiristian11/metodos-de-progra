@@ -15,6 +15,36 @@ void logs(char *accion){
 	fprintf(file,"[%04d-%02d-%02d %02d:%02d] %s\n",infotiempo->tm_year + 1900,infotiempo->tm_mon + 1,infotiempo->tm_mday,infotiempo->tm_hour,infotiempo->tm_min,accion);
 	fclose(file);
 }
+//funcion para reemplazar cada parte del interfaz
+
+void actualizar_matriz(int **mapa, int **minimap, int fila, int columna){
+	FILE *archivo = fopen("interfaz.txt","a");
+	int aux = columna - 3;
+	fila = fila - 3;
+	for(int i = 0;i < 7; i++){
+		columna = aux;
+		for(int j=0; j < 7; j++){
+			columna = aux;
+			if(fila < 0 || fila > 49 || columna < 0 || columna > 49){
+				minimap[i][j] = -3;
+			}
+			else{
+				fprintf(archivo,"%d",minimap[i][j]);
+			}if (j < columna - 1){
+			fprintf(archivo, ".png,");
+			}
+			columna = columna + 1;
+		}
+		fila = fila + 1;
+		fprintf(archivo, "\n");
+	}
+
+
+	fclose(archivo);
+	return;
+}
+//
+
 // Definiciones de estructuras
 typedef struct {
 	int salud;
