@@ -788,6 +788,17 @@ void recargar(personaje *personaje) {
 }
 
 void usarObjeto(personaje *personaje, char *objeto) {
+if (*objeto).cantidad > 1{
+	if (*personaje).salud < (*personaje).saludmaxima - 500{
+		return (*personaje).salud + 500;
+	else{
+		return (*personaje).salud == (*personaje.saludmaxima);
+	}else{
+		printf("No tienes objetos en tu inventario");
+	}
+}
+}
+	
     // Implementa el uso de objetos
 }
 
