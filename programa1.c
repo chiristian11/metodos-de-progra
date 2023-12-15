@@ -467,7 +467,6 @@ void localizar(int** mapa,int* fila,int* columna,int caracter){
 	return;
 }
 
-//recordar cambiar estos valores
 int** transformada(char** mapa,int fila,int columna){
 	int **mapa_int;
 	char pared_c = '*';
