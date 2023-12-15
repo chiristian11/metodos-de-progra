@@ -402,6 +402,14 @@ void leermapa(FILE* fmapa, char** mapa, int fila,int columna){
 	return;
 }
 
+void leerestado(FILE* fpartida,int* estado){
+  // lee los elementos de una matriz de numeros que esten en un archivo
+  for (int i = 0; i < 196; i++){
+    fscanf(fpartida," %d",&estado[i]);
+  }
+  return;
+}
+
 char** lector(int i,int *fila,int *columna,int dificil){
 	// lee el mapa especificado por el numero, actualmente solo es mapa1
 	FILE* fmapa;
