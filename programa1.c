@@ -18,7 +18,7 @@ void logs(char *accion){
 //funcion para reemplazar cada parte del interfaz
 
 void actualizar_matriz(int **mapa, int **minimap, int fila, int columna){
-	FILE *archivo = fopen("interfaz.txt","a");
+	FILE *archivo = fopen("interfaz.txt","w");
 	int aux = columna - 3;
 	fila = fila - 3;
 	for(int i = 0;i < 7; i++){
