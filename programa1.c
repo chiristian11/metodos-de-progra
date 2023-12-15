@@ -1125,8 +1125,21 @@ int* append_menor(int *arreglo,int cantidad,int n_elemento){
 	return arreglo_nuevo;
 }
 
-void recargar(personaje *personaje) {
-    // Implementa la recarga de munición
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void recargar(personaje *jugador) {
+    if ((*jugador).arma.tipo == 'p') {
+        // Si el jugador tiene un arma de tipo pistola, recargar hasta el número inicial de balas
+        int balas_iniciales = (*jugador).arma.balas_iniciales;
+        (*jugador).arma.balas = balas_iniciales;
+        printf("Has recargado la pistola. Balas restantes: %d\n", (*jugador).arma.balas);
+    } else if ((*jugador).arma.tipo == 'f') {
+        // Si el jugador tiene un arma de tipo francotirador, recargar hasta el número inicial de balas
+        int balas_iniciales = (*jugador).arma.balas_iniciales;
+        (*jugador).arma.balas = balas_iniciales;
+        printf("Has recargado el francotirador. Balas restantes: %d\n", (*jugador).arma.balas);
+    } else {
+        printf("El jugador tiene un arma desconocida.\n");
+    }
 }
 
 void usarObjeto(personaje *personaje, char *objeto) {
