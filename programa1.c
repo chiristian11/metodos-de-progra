@@ -805,6 +805,12 @@ int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
           estado[aux] = 0;
         break;
         default:
+	  fila_aux = fila_aux;
+          columna_aux = columna_max;
+          localizar(mapa,&fila_aux,&columna_aux, i + 1);
+          if(fila_aux != fila_max && columna_aux != 0){
+            mapa[fila_aux][columna_aux] = 0;
+          }
           estado[aux] = 0;
           aux ++;
           estado[aux] = 0;
@@ -841,23 +847,58 @@ int* estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
 int** crear_mapa(int tipo,int *fila_max,int *columna_max,int *estado,int **mapa){
   char **mapabase;
 
-  estado = estado_partida(mapa,estado,*fila_max,*columna_max);
-  
   int dificultad;
   printf("Eliga cuantos equipos enemigos quieres en el mapa: ");
   scanf("%d",&dificultad);
   if(dificultad > 1){
-    printf("\nHabran 2 equipos enemigos... destruyelos");
+    printf("\nHabran 2 equipos enemigos... destruyelos\n\n");
     mapabase = lector(tipo,fila_max,columna_max,2);
   }
   else{
-    printf("\nHabra 1 equipo enemigo... destruyelo");
+    printf("\nHabra 1 equipo enemigo... destruyelo\n\n");
     mapabase = lector(tipo,fila_max,columna_max,1);
   }
-
+  
   mapa = transformada(mapabase,*fila_max,*columna_max);
+  
+  estado_partida(mapa,estado,*fila_max,*columna_max);
+  
   colocar_personajes(mapa,*fila_max,*columna_max);
+  
   liberar_memoria_c(mapabase,*fila_max);
+  return mapa;
+}
+
+void guardar_partida(int** mapa,int* estado, int fila_max, int columna_max){
+  FILE *archivo = fopen("salvado","w");
+  fprintf(archivo,"%d %d\n",fila_max,columna_max);
+  for(int i = 0; i < fila_max; i++){
+    for(int j = 0; j < columna_max; j++){
+      fprintf(archivo,"%d ",mapa[i][j]);
+    }
+    fprintf(archivo,"\n");
+  }
+  fprintf(archivo,"\n");
+  for(int i = 0; i < 196; i++){
+    fprintf(archivo,"%d ",estado[i]);
+  }
+  fclose(archivo);
+  return;
+}
+
+int** leer_partida(int** mapa,int* estado,int *fila_max,int *columna_max){
+  FILE* fmapa;
+  fmapa = fopen("salvado", "r");
+  
+  fscanf(fmapa,"%d",fila_max);
+  fscanf(fmapa,"%d",columna_max);
+
+  mapa = mapa_num(*fila_max,*columna_max);
+  
+  leerpartida(fmapa, mapa, *fila_max, *columna_max);
+  leerestado(fmapa, estado);
+
+  fclose(fmapa);
   return mapa;
 }
 
@@ -1077,25 +1118,6 @@ int* append_menor(int *arreglo,int cantidad,int n_elemento){
 	return arreglo_nuevo;
 }
 
-/* por si es necesaria
-int* eliminar(int *arreglo,int cantidad,int ubicacion){
-	int *salida;
-	int total = cantidad + 1;
-	salida = (int *)malloc(sizeof(int)*(total));
-	if (ubicacion > cantidad){
-		ubicacion = cantidad;
-	}
-	for(int i=0;i < ubicacion;i++){
-		salida[i] = arreglo[i];
-	}
-	for(int i=ubicacion;i < cantidad;i++){
-		salida[i] = arreglo[i+1];
-	}
-	free(arreglo);
-	return salida;
-}
-*/
-
 void recargar(personaje *personaje) {
     // Implementa la recarga de munición
 }
@@ -1124,15 +1146,10 @@ int main() {
 	//personajes
 
 	personaje sniper = {1000,1000,4,3,1,3};
-
 	personaje ranger = {1500,1500,5,4,6,3};
-
 	personaje grenadier = {1200,1200,4,2,1,3};
-
 	personaje specialist = {1000,1000,4,3,1,3};
-
 	personaje cannibal = {1200,1200,4,2,1,3};
-
 	personaje volatilee = {950,950,4,5,6,3};
 
 	//armas, forma = {cant balas, daño}
@@ -1159,8 +1176,18 @@ int main() {
 	int fila;
 	int columna;
 
-	mapa = crear_mapa(numero_alea, &fila, &columna, mapa);
-
+	int decisiones;
+	printf("elija entre nueva partida o cargar partida\n");
+	printf("1. nueva partida\n");
+	printf("2. cargar partida\n");
+	scanf("%d",&decisiones);
+	if(decisiones == 1){
+		mapa = crear_mapa(numero_alea, &fila, &columna, estado, mapa);
+	}
+	else{
+		mapa = leer_partida(mapa, estado, &fila, &columna);
+	}
+	
 	int fila_local = fila;
 	int columna_local = columna;
 	localizar(mapa, &fila_local, &columna_local, 1); // el entero es el personaje a mover
@@ -1205,6 +1232,7 @@ int main() {
 			break;
 			case 5:
 			// Salir del juego
+			guardar_partida(mapa,estado,fila,columna);
 			exit(0);
 			default:
 			printf("Opción no válida\n");
