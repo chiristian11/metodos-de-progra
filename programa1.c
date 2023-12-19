@@ -2,19 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-//funcion para agregar los logs a cada accion del programa
-void logs(char *accion){
-	time_t tiempoActual;
-	struct tm *infotiempo;
-	time(&tiempoActual);
-	infotiempo = localtime(&tiempoActual);
-	
-	char filename[1000];
-	snprintf(filename,sizeof (filename),"%04d%02d%02d_%02d%02d.txt",infotiempo->tm_year + 1900,infotiempo->tm_mon + 1,infotiempo->tm_mday,infotiempo->tm_hour,infotiempo->tm_min);
-	FILE *file = fopen(filename,"a");
-	fprintf(file,"[%04d-%02d-%02d %02d:%02d] %s\n",infotiempo->tm_year + 1900,infotiempo->tm_mon + 1,infotiempo->tm_mday,infotiempo->tm_hour,infotiempo->tm_min,accion);
-	fclose(file);
-}
+struct tm tm;
+time_t t;
 //funcion para reemplazar cada parte del interfaz
 
 void actualizar_matriz(int **mapa, int **minimap, int fila, int columna){
@@ -942,7 +931,7 @@ void ubicar_mostrar(int **mapa,int **minimap,int fila,int columna){
 	return;
 }
 
-void mover_derecha(int **mapa,int *fila,int *columna,int columna_max,int *energia){
+void mover_derecha(int **mapa,int *fila,int *columna,int columna_max,int *energia,FILE *log){
 	// Mueve el objeto en la zelda elegida hacia la derecha dependiendo de las condiciones
 	int signo = 100;
 	*energia = *energia - 1;
@@ -965,7 +954,7 @@ void mover_derecha(int **mapa,int *fila,int *columna,int columna_max,int *energi
 	return;
 }
 
-void mover_abajo(int **mapa,int *fila,int *columna,int fila_max,int *energia){
+void mover_abajo(int **mapa,int *fila,int *columna,int fila_max,int *energia, FILE *log){
 	// Mueve el objeto en la zelda elegida hacia abajo dependiendo de las condiciones
 	int signo = 100;
 	*energia = *energia - 1;
@@ -988,7 +977,7 @@ void mover_abajo(int **mapa,int *fila,int *columna,int fila_max,int *energia){
 	return;
 }
 
-void mover_izquierda(int **mapa,int *fila,int *columna,int *energia){
+void mover_izquierda(int **mapa,int *fila,int *columna,int *energia,FILE *log){
 	// Mueve el objeto en la zelda elegida hacia la izquierda dependiendo de las condiciones
 	int signo = 100;
 	*energia = *energia - 1;
@@ -1011,7 +1000,7 @@ void mover_izquierda(int **mapa,int *fila,int *columna,int *energia){
 	return;
 }
 
-void mover_arriba(int **mapa,int *fila,int *columna,int *energia){
+void mover_arriba(int **mapa,int *fila,int *columna,int *energia,FILE *log){
 	// Mueve el objeto en la zelda elegida hacia arriba dependiendo de las condiciones
 	int signo = 100;
 	*energia = *energia - 1;
@@ -1034,7 +1023,7 @@ void mover_arriba(int **mapa,int *fila,int *columna,int *energia){
 	return;
 }
 
-int movimiento(int **mapa,int **minimap,int *fila,int fila_max,int *columna,int columna_max,int energia){
+int movimiento(int **mapa,int **minimap,int *fila,int fila_max,int *columna,int columna_max,int energia,FILE *log){
 	// Mueve el objeto en la zelda elegida hacia donde el jugador quiera dependiendo de las condiciones
 	if(energia == 0)
 		return 0;
@@ -1042,24 +1031,44 @@ int movimiento(int **mapa,int **minimap,int *fila,int fila_max,int *columna,int 
 	scanf("%c",&mov);
 	switch (mov){
 		case 'w':
-		mover_arriba(mapa,fila,columna,&energia);
+		mover_arriba(mapa,fila,columna,&energia,log);
 		ubicar_mostrar(mapa,minimap,*fila,*columna);
+		t = time(NULL);
+	        tm = *localtime(&t);
+	        fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	        fprintf(log,"el ususario se movio hacia arriba\n");
 		break;
 		case 'a':
-		mover_izquierda(mapa,fila,columna,&energia);
+		mover_izquierda(mapa,fila,columna,&energia,log);
 		ubicar_mostrar(mapa,minimap,*fila,*columna);
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"el ususario se movio hacia la izquierda\n");
 		break;
 		case 's':
-		mover_abajo(mapa,fila,columna,fila_max,&energia);
+		mover_abajo(mapa,fila,columna,fila_max,&energia,log);
 		ubicar_mostrar(mapa,minimap,*fila,*columna);
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"el ususario se movio hacia abajo\n");
 		break;
 		case 'd':
-		mover_derecha(mapa,fila,columna,columna_max,&energia);
+		mover_derecha(mapa,fila,columna,columna_max,&energia,log);
 		ubicar_mostrar(mapa,minimap,*fila,*columna);
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"el ususario se movio hacia la derecha\n");
 		break;
 		case 'q':
 		energia = energia - 1;
 		ubicar_mostrar(mapa,minimap,*fila,*columna);
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"el ususario gasto energia sin moverse\n");
 		break;
 		case '\n':
 		printf("le falta gastar %d energia",energia);
@@ -1159,6 +1168,16 @@ if (*objeto).cantidad > 1{
 
 // Función principal
 int main() {
+	FILE *log;
+	log = fopen("log.txt", "w");
+	fprintf(log, "Fecha           Accion realizada\n");
+	fprintf(log, "-------------------------------------------------------------------------------------\n");
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log, "Inicio del programa \n");
+	
+	srand(time(NULL));
 	personaje jugador;
 	personaje enemigo;
 
