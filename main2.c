@@ -1226,7 +1226,7 @@ int* append_menor(int *arreglo,int cantidad,int n_elemento){
   return arreglo_nuevo;
 }
 
-void disparo_probable(int* estado,int atacante,int defensor,int arma,int largo){
+void disparo_probable(int* estado,int atacante,int defensor,int arma,int largo,FILE *log){
   int aux;
   int agravio;
   int porcentaje = 100;
@@ -1282,7 +1282,10 @@ void disparo_probable(int* estado,int atacante,int defensor,int arma,int largo){
         estado[(defensor - 1) * 13 + 7] = 0;
         estado[(defensor - 1) * 13 + 9] = 0;
         estado[(defensor - 1) * 13 + 10] = 0;
-          
+        t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"%d","el jugador",&defensor,"ha muerto\n");  
         printf("El personaje defensor ha muerto.\n");
       }
     }
@@ -1363,7 +1366,7 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
         }
         else{
           fila_local++;
-		  t = time(NULL);
+		t = time(NULL);
 	      tm = *localtime(&t);
 	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
 	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia abajo a",&atacante,"y fallo\n");
@@ -1401,7 +1404,7 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
     else if(defensor < equipo_v + 6){
       defensor = defensor - equipo_v + 11;
     }
-    disparo_probable(estado,orden,defensor,arma,contar);
+    disparo_probable(estado,orden,defensor,arma,contar,log);
   }
   else{
     estado[(atacante - 1) * 13 + 3 + 3 * arma] --;
