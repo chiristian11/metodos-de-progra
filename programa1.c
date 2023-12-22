@@ -85,6 +85,16 @@ objeto monster = {0,0,0,2};
 objeto tnt = {5000,0,0,0};
 objeto c4 = {700,0,0,0};
 
+int const pared_item = 14;
+int const pared_completa = 13;
+int const pared_alta = 12;
+int const obstaculo = 11;
+int const camino = 10;
+
+int equipo_aliado = 61;
+int equipo_l = 81;
+int equipo_v = 91;
+
 // Funciones
 void ya(int i){
   // funcion que indica que el programa paso por aqui
@@ -439,13 +449,13 @@ char** lector(int i,int *fila,int *columna,int dificil){
   FILE* fmapa;
   switch (i){
     case 1:
-    fmapa = fopen("mapa1.txt", "r");
+    fmapa = fopen("mapa1", "r");
     break;
     case 2:
-    fmapa = fopen("mapa2.txt","r");
+    fmapa = fopen("mapa2","r");
     break;
     default:
-    fmapa = fopen("mapa3.txt","r");
+    fmapa = fopen("mapa3","r");
     break;
   }
   fscanf(fmapa,"%d",fila);
@@ -493,18 +503,18 @@ void localizar(int** mapa,int* fila,int* columna,int caracter){
 int** transformada(char** mapa,int fila,int columna){
   int **mapa_int;
   char pared_c = '*';
-  int remplazo_c = -3;
+  int remplazo_c = pared_completa;
   char pared_a = '/';
-  int remplazo_a = -2;
+  int remplazo_a = pared_alta;
   char comida_b = '+';
-  int remplazo_b = -1;
+  int remplazo_b = obstaculo;
   char aliado = 'E';
-  int remplazo_s = 1;
+  int remplazo_s = equipo_aliado;
   char enemigo_l = 'L';
-  int remplazo_l = 6;
+  int remplazo_l = equipo_l;
   char enemigo_v = 'V';
-  int remplazo_v = 11;
-  int remplazo_n = 0;
+  int remplazo_v = equipo_v;
+  int remplazo_n = camino;
   mapa_int = mapa_num(fila,columna);
   for (int i=0;i < fila;i++){
     for (int j=0;j < columna;j++){
@@ -534,7 +544,7 @@ void ubicar(int **mapa,int **minimap,int fila,int columna){
     columna = aux;
     for(int j = 0;j < 7;j++){
       if(fila < 0 || fila > 49 || columna < 0 || columna > 49){
-        minimap[i][j] = -3; // Alerta, cambiar a numero de pared c
+        minimap[i][j] = pared_completa; // Alerta, cambiar a numero de pared c
       }
       else{
         minimap[i][j] = mapa[fila][columna];
@@ -549,30 +559,30 @@ void ubicar(int **mapa,int **minimap,int fila,int columna){
 void colocar_personajes(int **mapa,int fila_max,int columna_max){
   int fila_aux = fila_max;
   int columna_aux = columna_max;
-  localizar(mapa,&fila_aux,&columna_aux,1);
+  localizar(mapa,&fila_aux,&columna_aux,equipo_aliado);
   if(fila_aux != fila_max && columna_aux != 0){
-    mapa[fila_aux - 1][columna_aux + 1] = 2;
-    mapa[fila_aux + 1][columna_aux + 1] = 3;
-    mapa[fila_aux + 1][columna_aux - 1] = 4;
-    mapa[fila_aux - 1][columna_aux - 1] = 5;
+    mapa[fila_aux - 1][columna_aux + 1] = equipo_aliado + 1;
+    mapa[fila_aux + 1][columna_aux + 1] = equipo_aliado + 2;
+    mapa[fila_aux + 1][columna_aux - 1] = equipo_aliado + 3;
+    mapa[fila_aux - 1][columna_aux - 1] = equipo_aliado + 4;
   }
   fila_aux = fila_max;
   columna_aux = columna_max;
-  localizar(mapa,&fila_aux,&columna_aux,6);
+  localizar(mapa,&fila_aux,&columna_aux,equipo_l);
   if(fila_aux != fila_max && columna_aux != 0){
-    mapa[fila_aux - 1][columna_aux + 1] = 7;
-    mapa[fila_aux + 1][columna_aux + 1] = 8;
-    mapa[fila_aux + 1][columna_aux - 1] = 9;
-    mapa[fila_aux - 1][columna_aux - 1] = 10;
+    mapa[fila_aux - 1][columna_aux + 1] = equipo_l + 1;
+    mapa[fila_aux + 1][columna_aux + 1] = equipo_l + 2;
+    mapa[fila_aux + 1][columna_aux - 1] = equipo_l + 3;
+    mapa[fila_aux - 1][columna_aux - 1] = equipo_l + 4;
   }
   fila_aux = fila_max;
   columna_aux = columna_max;
-  localizar(mapa,&fila_aux,&columna_aux,11);
+  localizar(mapa,&fila_aux,&columna_aux,equipo_v);
   if(fila_aux != fila_max && columna_aux != 0){
-    mapa[fila_aux - 1][columna_aux + 1] = 12;
-    mapa[fila_aux + 1][columna_aux + 1] = 13;
-    mapa[fila_aux + 1][columna_aux - 1] = 14;
-    mapa[fila_aux - 1][columna_aux - 1] = 15;
+    mapa[fila_aux - 1][columna_aux + 1] = equipo_v + 1;
+    mapa[fila_aux + 1][columna_aux + 1] = equipo_v + 2;
+    mapa[fila_aux + 1][columna_aux - 1] = equipo_v + 3;
+    mapa[fila_aux - 1][columna_aux - 1] = equipo_v + 4;
   }
   return;
 }
@@ -669,7 +679,7 @@ void estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
 
   int fila_aux = fila_max;
   int columna_aux = columna_max;
-  localizar(mapa,&fila_aux,&columna_aux,6);
+  localizar(mapa,&fila_aux,&columna_aux,equipo_l);
   if(fila_aux != fila_max && columna_aux != 0){
     int n = rand() % 3 + 1;
     switch(n){
@@ -706,7 +716,7 @@ void estado_partida(int **mapa,int* estado,int fila_max,int columna_max){
 
   fila_aux = fila_max;
   columna_aux = columna_max;
-  localizar(mapa,&fila_aux,&columna_aux,11);
+  localizar(mapa,&fila_aux,&columna_aux,equipo_v);
   if(fila_aux != fila_max && columna_aux != 0){
     int n = rand() % 3 + 1;
     switch(n){
@@ -1010,22 +1020,22 @@ int** leer_partida(int** mapa,int* estado,int *fila_max,int *columna_max){
   return mapa;
 }
 
-void mover_derecha(int **mapa,int *fila,int *columna,int columna_max,int *energia, FILE *log){
+void mover_derecha(int **mapa,int *fila,int *columna,int columna_max,int *energia){
   // Mueve el objeto en la zelda elegida hacia la derecha dependiendo de las condiciones
   int signo = 100;
   *energia = *energia - 1;
   if(*columna < columna_max - 1){
     signo = mapa[*fila][*columna + 1];
   }
-  if (signo == 0){
+  if (signo == camino){
     mapa[*fila][*columna + 1] = mapa[*fila][*columna];
-    mapa[*fila][*columna] = 0;
+    mapa[*fila][*columna] = camino;
     *columna = *columna + 1;
   }
-  else if(signo == -1 && mapa[*fila][*columna + 2] == 0 && *energia >= 1){
+  else if(signo == obstaculo && mapa[*fila][*columna + 2] == camino && *energia >= 1){
     if(*columna < columna_max - 2){
       mapa[*fila][*columna + 2] = mapa[*fila][*columna];
-      mapa[*fila][*columna] = 0;
+      mapa[*fila][*columna] = camino;
       *columna = *columna + 2;
       *energia = *energia - 1;
     }
@@ -1033,22 +1043,22 @@ void mover_derecha(int **mapa,int *fila,int *columna,int columna_max,int *energi
   return;
 }
 
-void mover_abajo(int **mapa,int *fila,int *columna,int fila_max,int *energia, FILE *log){
+void mover_abajo(int **mapa,int *fila,int *columna,int fila_max,int *energia){
   // Mueve el objeto en la zelda elegida hacia abajo dependiendo de las condiciones
   int signo = 100;
   *energia = *energia - 1;
   if(*fila < fila_max - 1){
     signo = mapa[*fila + 1][*columna];
   }
-  if (signo == 0){
+  if (signo == camino){
     mapa[*fila + 1][*columna] = mapa[*fila][*columna];
-    mapa[*fila][*columna] = 0;
+    mapa[*fila][*columna] = camino;
     *fila = *fila + 1;
   }
-  else if(signo == -1 && mapa[*fila + 2][*columna] == 0 && *energia >= 1){
+  else if(signo == obstaculo && mapa[*fila + 2][*columna] == camino && *energia >= 1){
     if (*fila < fila_max - 2){
       mapa[*fila + 2][*columna] = mapa[*fila][*columna];
-      mapa[*fila][*columna] = 0;
+      mapa[*fila][*columna] = camino;
       *fila = *fila + 2;
       *energia = *energia - 1;
     }
@@ -1056,22 +1066,22 @@ void mover_abajo(int **mapa,int *fila,int *columna,int fila_max,int *energia, FI
   return;
 }
 
-void mover_izquierda(int **mapa,int *fila,int *columna,int *energia, FILE *log){
+void mover_izquierda(int **mapa,int *fila,int *columna,int *energia){
   // Mueve el objeto en la zelda elegida hacia la izquierda dependiendo de las condiciones
   int signo = 100;
   *energia = *energia - 1;
   if(*columna > 0){
     signo = mapa[*fila][*columna - 1];
   }
-  if (signo == 0){
+  if (signo == camino){
     mapa[*fila][*columna - 1] = mapa[*fila][*columna];
-    mapa[*fila][*columna] = 0;
+    mapa[*fila][*columna] = camino;
     *columna = *columna - 1;
   }
-  else if(signo == -1 &&mapa[*fila][*columna - 2] == 0 && *energia >= 1){
+  else if(signo == obstaculo &&mapa[*fila][*columna - 2] == camino && *energia >= 1){
     if (*columna > 1){
       mapa[*fila][*columna - 2] = mapa[*fila][*columna];
-      mapa[*fila][*columna] = 0;
+      mapa[*fila][*columna] = camino;
       *columna = *columna - 2;
       *energia = *energia - 1;
     }
@@ -1079,22 +1089,22 @@ void mover_izquierda(int **mapa,int *fila,int *columna,int *energia, FILE *log){
   return;
 }
 
-void mover_arriba(int **mapa,int *fila,int *columna,int *energia,FILE *log){
+void mover_arriba(int **mapa,int *fila,int *columna,int *energia){
   // Mueve el objeto en la zelda elegida hacia arriba dependiendo de las condiciones
   int signo = 100;
   *energia = *energia - 1;
   if(*fila > 0){
     signo = mapa[*fila - 1][*columna];
   }
-  if (signo == 0){
+  if (signo == camino){
     mapa[*fila - 1][*columna] = mapa[*fila][*columna];
-    mapa[*fila][*columna] = 0;
+    mapa[*fila][*columna] = camino;
     *fila = *fila - 1;
   }
-  else if(signo == -1 && mapa[*fila - 2][*columna] == 0 && *energia >= 1){
+  else if(signo == obstaculo && mapa[*fila - 2][*columna] == camino && *energia >= 1){
     if(*columna > 1){
       mapa[*fila - 2][*columna] = mapa[*fila][*columna];
-      mapa[*fila][*columna] = 0;
+      mapa[*fila][*columna] = camino;
       *fila = *fila - 2;
       *energia = *energia - 1;
     }
@@ -1102,7 +1112,7 @@ void mover_arriba(int **mapa,int *fila,int *columna,int *energia,FILE *log){
   return;
 }
 
-int movimiento(int **mapa,int **minimap,int *estado,int *fila,int fila_max,int *columna,int columna_max,int energia, FILE *log){
+int movimiento(int **mapa,int **minimap,int *estado,int *fila,int fila_max,int *columna,int columna_max,int energia){
   // Mueve el objeto en la zelda elegida hacia donde el jugador quiera dependiendo de las condiciones
   if(energia == 0)
     return 0;
@@ -1110,48 +1120,28 @@ int movimiento(int **mapa,int **minimap,int *estado,int *fila,int fila_max,int *
   scanf("%c",&mov);
   switch (mov){
     case 'w':
-    mover_arriba(mapa,fila,columna,&energia,log);
+    mover_arriba(mapa,fila,columna,&energia);
     ubicar(mapa,minimap,*fila,*columna);
     actualizar_matriz(minimap,estado,fila_max,columna_max);
-	t = time(NULL);
-	tm = *localtime(&t);
-	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"el ususario se movio hacia arriba\n");
     break;
     case 'a':
-    mover_izquierda(mapa,fila,columna,&energia,log);
+    mover_izquierda(mapa,fila,columna,&energia);
     ubicar(mapa,minimap,*fila,*columna);
     actualizar_matriz(minimap,estado,fila_max,columna_max);
-	t = time(NULL);
-	tm = *localtime(&t);
-	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"el ususario se movio hacia la izquierda\n");
     break;
     case 's':
-    mover_abajo(mapa,fila,columna,fila_max,&energia,log);
+    mover_abajo(mapa,fila,columna,fila_max,&energia);
     ubicar(mapa,minimap,*fila,*columna);
     actualizar_matriz(minimap,estado,fila_max,columna_max);
-	t = time(NULL);
-	tm = *localtime(&t);
-	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"el ususario se movio hacia abajo\n");
     break;
     case 'd':
-    mover_derecha(mapa,fila,columna,columna_max,&energia,log);
+    mover_derecha(mapa,fila,columna,columna_max,&energia);
     ubicar(mapa,minimap,*fila,*columna);
     actualizar_matriz(minimap,estado,fila_max,columna_max);
-	t = time(NULL);
-	tm = *localtime(&t);
-	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"el ususario se movio hacia la derecha\n");
     break;
     case 'q':
     energia = energia - 1;
     ubicar(mapa,minimap,*fila,*columna);
-	t = time(NULL);
-	tm = *localtime(&t);
-	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"el ususario gasto energia sin moverse\n");
     break;
     case '\n':
     printf("le falta gastar %d energia",energia);
@@ -1162,7 +1152,7 @@ int movimiento(int **mapa,int **minimap,int *estado,int *fila,int fila_max,int *
     printf("movimiento no valido\n\n");
     break;
   }
-  return movimiento(mapa,minimap,estado,fila,fila_max,columna,columna_max,energia,log);
+  return movimiento(mapa,minimap,estado,fila,fila_max,columna,columna_max,energia);
 }
 
 int** append_preciso(int **arreglo,int cantidad,int *n_elemento,int ubicacion){
@@ -1241,6 +1231,7 @@ void disparo_probable(int* estado,int atacante,int defensor,int arma,int largo){
     seguridad = 5;
     break;
     case 4:
+    ya(1);
     agravio = fusil.agravio;
     probabilidad = 6;
     seguridad = 3;
@@ -1252,24 +1243,27 @@ void disparo_probable(int* estado,int atacante,int defensor,int arma,int largo){
     break;
     case 6:
     agravio = espada.agravio;
-    probabilidad = 90;
+    probabilidad = 100;
     seguridad = 1;
     porcentaje = 90;
     break;
   }
   aux = porcentaje - (largo - seguridad) * probabilidad;
   int probabilidad_disparo = rand() % 101 + 1;
+  printf("%d < %d, %d - (%d - %d) * %d ",probabilidad_disparo,aux,porcentaje,largo,seguridad,probabilidad);
   if (probabilidad_disparo < aux){
     printf("El disparo fue exitoso\n\n");
     if(estado[(atacante - 1) * 13 + 3 + 3 * arma] > 0){
       estado[(defensor - 1) * 13 + 2] -= agravio;
       estado[(atacante - 1) * 13 + 3 + 3 * arma] --;
       if (estado[(defensor - 1) * 13 + 2] <= 0){
-        estado[(defensor - 1) * 13 + 2] = 0; //easter egg soldados zombie
+        estado[(defensor - 1) * 13 + 2] = 0; //easter egg, soldado zombie
+        estado[(defensor - 1) * 13 + 3] = 0;
         estado[(defensor - 1) * 13 + 6] = 0;
         estado[(defensor - 1) * 13 + 7] = 0;
         estado[(defensor - 1) * 13 + 9] = 0;
         estado[(defensor - 1) * 13 + 10] = 0;
+          
         printf("El personaje defensor ha muerto.\n");
       }
     }
@@ -1283,11 +1277,11 @@ void disparo_probable(int* estado,int atacante,int defensor,int arma,int largo){
   return;
 }
 
-void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante,int arma){
+void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante,int orden,int arma){
   char dirrecion;
   int defensor;
   int acierto = 0;
-  printf("por favor ingrese la direcion a la que quiere disparar, en la misma forma de moverse\n");
+  printf("por favor ingrese la dirrecion a la que quiere disparar, en la misma forma de moverse\n");
   dirrecion = 'f';
   while(dirrecion != 'a' && dirrecion != 'd' && dirrecion != 'w' && dirrecion != 's'){
     scanf("%c",&dirrecion);
@@ -1300,7 +1294,7 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
     case 'w':
       while(fila_local > 0 && acierto == 0){
         contar ++;
-        if(mapa[fila_local - 1][columna_local] > 0){
+        if(mapa[fila_local - 1][columna_local] > equipo_aliado - 1){
           defensor = mapa[fila_local - 1][columna_local];
           acierto = 1;
         }
@@ -1312,7 +1306,7 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
     case 'a':
       while(columna_local > 0 && acierto == 0){
         contar ++;
-        if(mapa[fila_local][columna_local - 1] > 0){
+        if(mapa[fila_local][columna_local - 1] > equipo_aliado - 1){
           defensor = mapa[fila_local][columna_local - 1];
           acierto = 1;
         }
@@ -1324,7 +1318,7 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
     case 's':
       while(fila_local < fila_max - 1 && acierto == 0){
         contar ++;
-        if(mapa[fila_local + 1][columna_local] > 0){
+        if(mapa[fila_local + 1][columna_local] > equipo_aliado - 1){
           defensor = mapa[fila_local + 1][columna_local];
           acierto = 1;
         }
@@ -1336,7 +1330,7 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
     case 'd':
       while(columna_local < columna_max - 1 && acierto == 0){
         contar ++;
-        if(mapa[fila_local][columna_local + 1] > 0){
+        if(mapa[fila_local][columna_local + 1] > equipo_aliado - 1){
           defensor = mapa[fila_local][columna_local + 1];
           acierto = 1;
         }
@@ -1347,12 +1341,67 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
     break;
   }
   if(acierto == 1){
-    disparo_probable(estado,atacante,defensor,arma,contar);
+    if(defensor < equipo_aliado + 6){
+      defensor = defensor - equipo_aliado + 1;
+    }
+    else if(defensor < equipo_l + 6){
+      defensor = defensor - equipo_l + 6;
+    }
+    else if(defensor < equipo_v + 6){
+      defensor = defensor - equipo_v + 11;
+    }
+    disparo_probable(estado,orden,defensor,arma,contar);
   }
   else{
     estado[(atacante - 1) * 13 + 3 + 3 * arma] --;
-    printf("El disparo no impacto al personaje defensor.\n");
+    printf("El disparo no impacto a ningun personaje.\n");
   }
+}
+
+void tomar_item(int** mapa,int fila_max,int columna_max,int* estado,int jugador){
+  char dirrecion;
+  int defensor;
+  int acierto = 0;
+  int fila_local = fila_max;
+  int columna_local = columna_max;
+  int lugar;
+  int objeto;
+  printf("por favor ingrese la dirrecion del item, en la misma forma de moverse\n");
+  dirrecion = 'f';
+  while(dirrecion != 'a' && dirrecion != 'd' && dirrecion != 'w' && dirrecion != 's'){
+    scanf("%c",&dirrecion);
+  }
+  
+  localizar(mapa, &fila_local, &columna_local, jugador);
+  switch(dirrecion){
+    case 'w':
+      if(mapa[fila_local - 1][columna_local] == pared_item){
+        printf("ingrese la posicion del item nuevo a ubicar\n");
+        scanf("%d",&lugar);
+      }
+    break;
+    case 'a':
+      if(mapa[fila_local][columna_local - 1] == pared_item){
+        printf("ingrese la posicion del item nuevo a ubicar\n");
+        scanf("%d",&lugar);
+      }
+    break;
+    case 's':
+      if(mapa[fila_local + 1][columna_local] == pared_item){
+        printf("ingrese la posicion del item nuevo a ubicar\n");
+        scanf("%d",&lugar);
+      }
+    break;
+    case 'd':
+      if(mapa[fila_local][columna_local + 1] == pared_item){
+        printf("ingrese la posicion del item nuevo a ubicar\n");
+        scanf("%d",&lugar);
+      }
+    break;
+  }
+  objeto = rand() % 6 + 1;
+  estado[(jugador - equipo_aliado) * 13 + 10 + lugar] = objeto;
+  return;
 }
 
 void recargar(int* estado,int jugador, int arma){
@@ -1382,29 +1431,295 @@ void usarObjeto_botiquin(int* estado,int jugador,int lugarObjeto){
   return;
 }
 
+void aparicion_item(int** mapa,int identificador,int* estado){
+  int tipo;
+  int n;
+  if(estado[0] % 10 == 0){
+    n = rand() % 3 + 1;
+    tipo = identificador * 3 - n + 1;
+    switch (tipo){
+      case 1:
+      mapa[0][11] = pared_item;
+      mapa[4][17] = pared_item;
+      mapa[4][48] = pared_item;
+      mapa[6][49] = pared_item;
+      mapa[8][26] = pared_item;
+      mapa[11][3] = pared_item;
+      mapa[11][36] = pared_item;
+      mapa[15][24] = pared_item;
+      mapa[15][26] = pared_item;
+      mapa[16][25] = pared_item;
+      mapa[21][45] = pared_item;
+      mapa[23][5] = pared_item;
+      mapa[23][30] = pared_item;
+      mapa[27][24] = pared_item;
+      mapa[28][16] = pared_item;
+      mapa[29][18] = pared_item;
+      mapa[35][24] = pared_item;
+      mapa[38][10] = pared_item;
+      mapa[39][8] = pared_item;
+      mapa[40][11] = pared_item;
+      mapa[41][9] = pared_item;
+      mapa[42][25] = pared_item;
+      mapa[43][40] = pared_item;
+      mapa[43][46] = pared_item;
+      break;
+      case 2:
+      mapa[1][10] = pared_item;
+      mapa[2][11] = pared_item;
+      mapa[4][48] = pared_item;
+      mapa[5][48] = pared_item;
+      mapa[10][17] = pared_item;
+      mapa[11][36] = pared_item;
+      mapa[15][25] = pared_item;
+      mapa[16][17] = pared_item;
+      mapa[16][24] = pared_item;
+      mapa[16][26] = pared_item;
+      mapa[21][45] = pared_item;
+      mapa[23][5] = pared_item;
+      mapa[23][9] = pared_item;
+      mapa[23][30] = pared_item;
+      mapa[26][30] = pared_item;
+      mapa[28][18] = pared_item;
+      mapa[38][9] = pared_item;
+      mapa[39][11] = pared_item;
+      mapa[40][8] = pared_item;
+      mapa[41][10] = pared_item;
+      mapa[41][24] = pared_item;
+      mapa[42][27] = pared_item;
+      mapa[43][34] = pared_item;
+      mapa[43][40] = pared_item;
+      break;
+      case 3:
+      mapa[0][11] = pared_item;
+      mapa[4][17] = pared_item;
+      mapa[6][49] = pared_item;
+      mapa[8][26] = pared_item;
+      mapa[10][17] = pared_item;
+      mapa[11][3] = pared_item;
+      mapa[11][36] = pared_item;
+      mapa[15][24] = pared_item;
+      mapa[15][26] = pared_item;
+      mapa[16][24] = pared_item;
+      mapa[16][26] = pared_item;
+      mapa[21][45] = pared_item;
+      mapa[23][5] = pared_item;
+      mapa[23][30] = pared_item;
+      mapa[27][24] = pared_item;
+      mapa[28][16] = pared_item;
+      mapa[35][24] = pared_item;
+      mapa[38][9] = pared_item;
+      mapa[38][10] = pared_item;
+      mapa[41][9] = pared_item;
+      mapa[41][10] = pared_item;
+      mapa[42][25] = pared_item;
+      mapa[43][34] = pared_item;
+      mapa[43][46] = pared_item;
+      break;
+      case 4:
+      mapa[0][16] = pared_item;
+      mapa[3][29] = pared_item;
+      mapa[4][16] = pared_item;
+      mapa[8][29] = pared_item;
+      mapa[9][21] = pared_item;
+      mapa[15][8] = pared_item;
+      mapa[20][31] = pared_item;
+      mapa[21][23] = pared_item;
+      mapa[24][15] = pared_item;
+      mapa[24][31] = pared_item;
+      mapa[24][42] = pared_item;
+      mapa[24][43] = pared_item;
+      mapa[26][15] = pared_item;
+      mapa[27][5] = pared_item;
+      mapa[27][7] = pared_item;
+      mapa[29][14] = pared_item;
+      mapa[33][36] = pared_item;
+      mapa[44][33] = pared_item;
+      mapa[44][35] = pared_item;
+      mapa[44][49] = pared_item;
+      mapa[46][24] = pared_item;
+      mapa[49][2] = pared_item;
+      mapa[49][20] = pared_item;
+      mapa[49][43] = pared_item;
+      break;
+      case 5:
+      mapa[0][16] = pared_item;
+      mapa[1][49] = pared_item;
+      mapa[2][16] = pared_item;
+      mapa[2][49] = pared_item;
+      mapa[8][29] = pared_item;
+      mapa[9][21] = pared_item;
+      mapa[15][8] = pared_item;
+      mapa[21][22] = pared_item;
+      mapa[21][31] = pared_item;
+      mapa[22][31] = pared_item;
+      mapa[23][15] = pared_item;
+      mapa[23][31] = pared_item;
+      mapa[24][43] = pared_item;
+      mapa[27][15] = pared_item;
+      mapa[28][14] = pared_item;
+      mapa[33][36] = pared_item;
+      mapa[44][33] = pared_item;
+      mapa[44][35] = pared_item;
+      mapa[46][23] = pared_item;
+      mapa[48][49] = pared_item;
+      mapa[49][1] = pared_item;
+      mapa[49][3] = pared_item;
+      mapa[49][21] = pared_item;
+      mapa[49][48] = pared_item;
+      break;
+      case 6:
+      mapa[1][49] = pared_item;
+      mapa[2][16] = pared_item;
+      mapa[4][16] = pared_item;
+      mapa[8][29] = pared_item;
+      mapa[9][21] = pared_item;
+      mapa[15][8] = pared_item;
+      mapa[20][31] = pared_item;
+      mapa[21][22] = pared_item;
+      mapa[21][23] = pared_item;
+      mapa[21][31] = pared_item;
+      mapa[22][31] = pared_item;
+      mapa[23][31] = pared_item;
+      mapa[24][31] = pared_item;
+      mapa[24][42] = pared_item;
+      mapa[24][44] = pared_item;
+      mapa[25][15] = pared_item;
+      mapa[27][6] = pared_item;
+      mapa[27][7] = pared_item;
+      mapa[33][36] = pared_item;
+      mapa[43][49] = pared_item;
+      mapa[49][2] = pared_item;
+      mapa[49][20] = pared_item;
+      mapa[49][21] = pared_item;
+      mapa[49][43] = pared_item;
+      break;
+      case 7:
+      mapa[4][43] = pared_item;
+      mapa[5][10] = pared_item;
+      mapa[6][13] = pared_item;
+      mapa[6][15] = pared_item;
+      mapa[6][25] = pared_item;
+      mapa[10][31] = pared_item;
+      mapa[10][36] = pared_item;
+      mapa[14][42] = pared_item;
+      mapa[16][17] = pared_item;
+      mapa[22][10] = pared_item;
+      mapa[25][21] = pared_item;
+      mapa[25][29] = pared_item;
+      mapa[25][32] = pared_item;
+      mapa[25][33] = pared_item;
+      mapa[28][29] = pared_item;
+      mapa[30][29] = pared_item;
+      mapa[32][29] = pared_item;
+      mapa[33][24] = pared_item;
+      mapa[40][9] = pared_item;
+      mapa[40][20] = pared_item;
+      mapa[42][19] = pared_item;
+      mapa[44][19] = pared_item;
+      mapa[49][42] = pared_item;
+      mapa[49][43] = pared_item;
+      break;
+      case 8:
+      mapa[4][36] = pared_item;
+      mapa[5][4] = pared_item;
+      mapa[5][17] = pared_item;
+      mapa[6][13] = pared_item;
+      mapa[6][14] = pared_item;
+      mapa[6][25] = pared_item;
+      mapa[13][42] = pared_item;
+      mapa[15][42] = pared_item;
+      mapa[16][17] = pared_item;
+      mapa[16][21] = pared_item;
+      mapa[18][4] = pared_item;
+      mapa[25][30] = pared_item;
+      mapa[25][32] = pared_item;
+      mapa[27][29] = pared_item;
+      mapa[29][10] = pared_item;
+      mapa[29][29] = pared_item;
+      mapa[31][29] = pared_item;
+      mapa[33][24] = pared_item;
+      mapa[33][45] = pared_item;
+      mapa[40][20] = pared_item;
+      mapa[41][33] = pared_item;
+      mapa[43][19] = pared_item;
+      mapa[49][41] = pared_item;
+      mapa[49][42] = pared_item;
+      break;
+      case 9:
+      mapa[4][36] = pared_item;
+      mapa[4][43] = pared_item;
+      mapa[5][10] = pared_item;
+      mapa[5][17] = pared_item;
+      mapa[6][13] = pared_item;
+      mapa[6][14] = pared_item;
+      mapa[6][25] = pared_item;
+      mapa[10][36] = pared_item;
+      mapa[13][42] = pared_item;
+      mapa[15][42] = pared_item;
+      mapa[18][4] = pared_item;
+      mapa[25][21] = pared_item;
+      mapa[25][30] = pared_item;
+      mapa[25][31] = pared_item;
+      mapa[25][32] = pared_item;
+      mapa[27][29] = pared_item;
+      mapa[28][29] = pared_item;
+      mapa[29][10] = pared_item;
+      mapa[31][29] = pared_item;
+      mapa[32][29] = pared_item;
+      mapa[41][33] = pared_item;
+      mapa[43][19] = pared_item;
+      mapa[49][41] = pared_item;
+      mapa[49][44] = pared_item;
+      break;
+      }
+  }
+  return;
+}
+
+int condicion_victoria(int* estado){
+  int aux1 = 0;
+  int aux2 = 0;
+  int aux3 = 0;
+  for(int i = 0; i < 5; i++){
+    aux2 = aux2 + estado[i * 13 + 3];
+    aux3 = aux3 + estado[i * 13 + 3];
+  }
+  for(int i = 5; i < 10; i++){
+    aux1 = aux1 + estado[i * 13 + 3];
+    aux3 = aux3 + estado[i * 13 + 3];
+  }
+  for(int i = 10; i < 15; i++){
+    aux1 = aux1 + estado[i * 13 + 3];
+    aux2 = aux2 + estado[i * 13 + 3];
+  }
+  if (aux1 == 0 && aux2 == 0 && aux3 == 0){
+    return 4;
+  }
+  else if (aux3 == 0){
+    return 3;
+  }
+  else if (aux2 == 0){
+    return 2;
+  }
+  else if (aux1 == 0){
+    return 1;
+  }
+  else{
+    return 0;
+  }
+}
+
 // Función principal
 int main(){
-	FILE *log;
-	log = fopen("log.txt", "w");
-	fprintf(log, "Fecha           Accion realizada\n");
-	fprintf(log, "-------------------------------------------------------------------------------------\n");
-	t = time(NULL);
-	tm = *localtime(&t);
-	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log, "Inicio del programa \n");
-	
-	srand(time(NULL));
-	personaje jugador;
-	personaje enemigo;
+  srand(time(NULL));
+  personaje jugador;
+  personaje enemigo;
 
   int opcion;
   opcion = 3;
   while(opcion != 2){
-	printf("\n");
-	printf("Juego tactico\n");
-	printf("Shotrol\n");
-	printf("\n");
-    printf("Elige una opcion:\n");
+    printf("Elige una opción:\n");
     printf("1. Instrucciones\n");
     printf("2. Jugar\n");
     printf("3. Salir\n");
@@ -1458,26 +1773,17 @@ int main(){
         printf("    El jugador podra recargar sus armas y esta accion volvera a la cantidad de balas inicial del arma\n");
         printf("    El jugador podra pasar su turno\n");
         printf("    El jugador no podra salir del mapa\n\n");
-		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-		fprintf(log, "el jugador reviso las instrucciones\n");
       break;
       case 2:
-	    fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-		fprintf(log, "el jugador inicio el juego shotrol\n");
       break;
       case 3:
-	    t = time(NULL);
-		tm = *localtime(&t);
-	  	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-		fprintf(log, "fin de simulacion\n");
-		fclose(log);
         exit(0);
       break;
     }
   }
   int **mapa;
   int *estado = (int*)malloc(sizeof(int) * 196);
-  int numero_alea = 1; // eleccion de mapa
+  int numero_alea = 3; // eleccion de mapa
   int fila;
   int columna;
   int decisiones;
@@ -1490,6 +1796,18 @@ int main(){
   }
   else{
     mapa = leer_partida(mapa, estado, &fila, &columna);
+    int aux = mapa[35][4];
+    switch (aux){
+      case camino:
+        numero_alea = 1;
+      break;
+      case pared_alta:
+        numero_alea = 2;
+      break;
+      case pared_completa:
+        numero_alea = 3;
+      break;
+    }
   }
   salto(2);
 
@@ -1503,20 +1821,21 @@ int main(){
 
   int i = 6;
   int j = 0;
-  int victoriaj = 0;
-  int victoriav = 0;
-  int victorial = 0;
+  int victoria = 0;
   // Bucle principal del juego
-  while ((victoriaj + victoriav + victorial) == 0){
+  while (victoria == 0){
+    aparicion_item(mapa, numero_alea, estado);
     // aqui deberian moverse los enemigos V y despues L, esto no se mostrara al jugador
     
     // Mostrar el estado del juego y opciones al jugador
+    ya(1);
     i = 1;
     j = 0;
     while(i < 6){
       fila_local = fila; columna_local = columna;
-      localizar(mapa, &fila_local, &columna_local, i);
+      localizar(mapa, &fila_local, &columna_local, equipo_aliado + i - 1);
       if(fila_local != fila && columna_local != 0){
+        guardar_partida(mapa, estado, fila, columna);
         ubicar(mapa,minimap,fila_local,columna_local);
         actualizar_matriz(minimap,estado,fila,columna);
         printf("Jugador %d:\n",i);
@@ -1541,26 +1860,22 @@ int main(){
         printf("2. Disparar\n");
         printf("3. Recargar\n");
         printf("4. Usar objeto\n");
-        printf("5. Saltar\n");
-        printf("6. Salir. ");
-        printf("Nota: se perdera el progreso no guardado\n");
-        
+        printf("5. Tomar objetos\n");
+        printf("6. Saltar\n");
+        printf("7. Salir. ");
+        printf("Nota: se perdera el progreso no guardado, practicamente todo\n");
         scanf("%d", &eleccion);
         
         switch (eleccion) {
           case 1:
-            movimiento(mapa,minimap,estado,&fila_local,fila,&columna_local,columna,estado[(i - 1) * 13 + 4],log);
+            movimiento(mapa,minimap,estado,&fila_local,fila,&columna_local,columna,estado[(i - 1) * 13 + 4]);
             break;
           case 2:
             printf("Elige el arma a disparar:\n");
             printf("1. Primer arma\n");
             printf("2. Segundo arma\n");
             scanf("%d", &cual);
-            disparando(mapa, fila, columna, estado, i, cual);
-			t = time(NULL);
-			tm = *localtime(&t);
-			fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-			fprintf(log, "jugador acaba de disparar\n");
+            disparando(mapa, fila, columna, estado, equipo_aliado + i - 1, i, cual);
           // Llama a la función para disparar
           break;
           case 3:
@@ -1569,10 +1884,6 @@ int main(){
             printf("2. Segundo arma\n");
             scanf("%d", &cual);
             recargar(estado, i, cual);
-			t = time(NULL);
-			tm = *localtime(&t);
-			fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-			fprintf(log, "jugador acaba de recargar\n");
           // Llama a la función para recargar
           break;
           case 4:
@@ -1582,26 +1893,23 @@ int main(){
             printf("3. Tercer objeto\n");
             scanf("%d", &cual);
             usarObjeto_botiquin(estado, i, cual);
-			fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-			fprintf(log, "jugador acaba de usar objeto botiquin\n");
           // Llama a la función para usar objeto
           break;
           case 5:
-		  	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-			fprintf(log, "jugador acaba de saltar turno\n");
+            tomar_item(mapa, fila, columna, estado, equipo_aliado + i - 1);
+            j --;
           break;
           case 6:
+          break;
+          case 7:
           // Salir del juego
-		    fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-		    fprintf(log, "fin de simulacion\n");
-		    fclose(log);
             exit(0);
           default:
             printf("Opción no válida\n");
           }
         j ++;
         if(j == 2){
-          j = -1;
+          j = 0;
           i ++;
         }
         }
@@ -1610,7 +1918,20 @@ int main(){
       }
     }
     estado[0] ++;
-    // Actualizar el estado del juego (turno del enemigo, verificar victoria/derrota, etc.)
+    victoria = condicion_victoria(estado);
+  }
+  switch(victoria){
+    case 1:
+      printf("El Jugador ha ganado la contienda\n");
+      break;
+    case 2:
+      printf("El Equipo L ha ganado la batalla\n");
+      break;
+    case 3:
+      printf("El Equipo V ha ganado la guerra\n");
+      break;
+    default:
+      printf("El juego ha terminado en empate\n");
   }
   free(estado);
   liberar_memoria_n(mapa, columna);
