@@ -1285,7 +1285,7 @@ void disparo_probable(int* estado,int atacante,int defensor,int arma,int largo,F
         t = time(NULL);
 	tm = *localtime(&t);
 	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"%d","el jugador",&defensor,"ha muerto\n");  
+	fprintf(log,"el jugador %d ha muerto\n",defensor);  
         printf("El personaje defensor ha muerto.\n");
       }
     }
@@ -1319,17 +1319,9 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
         if(mapa[fila_local - 1][columna_local] > equipo_aliado - 1){
           defensor = mapa[fila_local - 1][columna_local];
           acierto = 1;
-		  	t = time(NULL);
-	        tm = *localtime(&t);
-	        fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	        fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia arriba a",&atacante,"y acerto\n");
         }
         else{
           fila_local--;
-		  t = time(NULL);
-	      tm = *localtime(&t);
-	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia arriba a",&atacante,"y acerto\n");
         }
       }
     break;
@@ -1339,17 +1331,9 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
         if(mapa[fila_local][columna_local - 1] > equipo_aliado - 1){
           defensor = mapa[fila_local][columna_local - 1];
           acierto = 1;
-		  t = time(NULL);
-	      tm = *localtime(&t);
-	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia la izquierda a",&atacante,"y acerto\n");
         }
         else{
           columna_local--;
-		  t = time(NULL);
-	      tm = *localtime(&t);
-	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia la izquierda a",&atacante,"y acerto\n");
         }
       }
     break;
@@ -1359,17 +1343,9 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
         if(mapa[fila_local + 1][columna_local] > equipo_aliado - 1){
           defensor = mapa[fila_local + 1][columna_local];
           acierto = 1;
-		  t = time(NULL);
-	      tm = *localtime(&t);
-	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia abajo a",&atacante,"y acerto\n");
         }
         else{
           fila_local++;
-		t = time(NULL);
-	      tm = *localtime(&t);
-	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia abajo a",&atacante,"y fallo\n");
         }
       }
     break;
@@ -1379,17 +1355,9 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
         if(mapa[fila_local][columna_local + 1] > equipo_aliado - 1){
           defensor = mapa[fila_local][columna_local + 1];
           acierto = 1;
-		  t = time(NULL);
-	      tm = *localtime(&t);
-	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia la derecha a",&atacante,"y acerto\n");
         }
         else{
           columna_local++;
-		  t = time(NULL);
-	      tm = *localtime(&t);
-	      fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	      fprintf(log,"%d %d","el jugador",&defensor,"disparo hacia la derecha a",&atacante,"y fallo\n");
         }
       }
     break;
@@ -1397,17 +1365,33 @@ void disparando(int** mapa,int fila_max,int columna_max,int* estado,int atacante
   if(acierto == 1){
     if(defensor < equipo_aliado + 6){
       defensor = defensor - equipo_aliado + 1;
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"%d %d","el jugador %d disparo a bot %d \n",atacante,defensor);
     }
     else if(defensor < equipo_l + 6){
       defensor = defensor - equipo_l + 6;
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"%d %d","el jugador %d disparo a bot %d del equipo l\n",atacante,defensor);
     }
     else if(defensor < equipo_v + 6){
       defensor = defensor - equipo_v + 11;
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"%d %d","el jugador %d disparo a bot %d del equipo v\n",atacante,defensor);
     }
     disparo_probable(estado,orden,defensor,arma,contar,log);
   }
   else{
     estado[(atacante - 1) * 13 + 3 + 3 * arma] --;
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log, "el jugador disparo al aire \n");
     printf("El disparo no impacto a ningun personaje.\n");
   }
 }
@@ -1474,7 +1458,7 @@ void usarObjeto_botiquin(int* estado,int jugador,int lugarObjeto,FILE *log){
 	t = time(NULL);
 	tm = *localtime(&t);
 	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"%d","el jugador",&jugador,"hizo uso de un botiquin\n");
+	fprintf(log,"%d","el jugador %d hizo uso de un botiquin\n",jugador);
     if (estado[(jugador - 1) * 13 + 2] <= estado[(jugador - 1) * 13 + 3] - 500){
       estado[(jugador - 1) * 13 + 2] = estado[(jugador - 1 ) * 13 + 2] + 500;
     }
@@ -1487,7 +1471,7 @@ void usarObjeto_botiquin(int* estado,int jugador,int lugarObjeto,FILE *log){
 	t = time(NULL);
 	tm = *localtime(&t);
 	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	fprintf(log,"%d","el jugador",&jugador,"intento usar un botiquin pero no quedaban disponibles\n");
+	fprintf(log,"%d","el jugador %d intento usar un botiquin pero no quedaban disponibles\n", jugador);
     printf("No tienes el botiquin en tu inventario en esa posición");
   }
   return;
@@ -1947,9 +1931,17 @@ int main(){
         
         switch (eleccion) {
           case 1:
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"turno del jugador %d \n",i);
             movimiento(mapa,minimap,estado,&fila_local,fila,&columna_local,columna,estado[(i - 1) * 13 + 4],log);
             break;
           case 2:
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"turno del jugador %d \n",i);
             printf("Elige el arma a disparar:\n");
             printf("1. Primer arma\n");
             printf("2. Segundo arma\n");
@@ -1958,6 +1950,10 @@ int main(){
           // Llama a la función para disparar
           break;
           case 3:
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"turno del jugador %d \n",i);
             printf("Elige el arma a recargar:\n");
             printf("1. Primer arma\n");
             printf("2. Segundo arma\n");
@@ -1966,6 +1962,10 @@ int main(){
           // Llama a la función para recargar
           break;
           case 4:
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"turno del jugador %d \n",i);
             printf("Elige el objeto a usar:\n");
             printf("1. Primer objeto\n");
             printf("2. Segundo objeto\n");
@@ -1975,10 +1975,19 @@ int main(){
           // Llama a la función para usar objeto
           break;
           case 5:
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"turno del jugador %d \n",i);
             tomar_item(mapa, fila, columna, estado, equipo_aliado + i - 1);
             j --;
           break;
           case 6:
+		t = time(NULL);
+		tm = *localtime(&t);
+		fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+		fprintf(log,"turno del jugador %d \n",i);
+		fprintf(log,"jugador %d ha saltado el turno\n",i);
           break;
           case 7:
           // Salir del juego
@@ -2001,31 +2010,35 @@ int main(){
   }
   switch(victoria){
     case 1:
-	  t = time(NULL);
-	  tm = *localtime(&t);
-	  fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	  fprintf(log,"el equipo del jugador ha ganado la partida\n");
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"el equipo del jugador ha ganado la partida\n");
+	fclose(log);
       printf("El Jugador ha ganado la contienda\n");
       break;
     case 2:
-	  t = time(NULL);
-	  tm = *localtime(&t);
-	  fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	  fprintf(log,"el equipo L ha ganado la partida\n");
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"el equipo L ha ganado la partida\n");
+	fclose(log);
       printf("El Equipo L ha ganado la batalla\n");
       break;
     case 3:
-	  t = time(NULL);
-	  tm = *localtime(&t);
-	  fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	  fprintf(log,"El equipo V ha ganado la partida\n");
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"El equipo V ha ganado la partida\n");
+	fclose(log);
       printf("El Equipo V ha ganado la guerra\n");
       break;
     default:
-	  t = time(NULL);
-	  tm = *localtime(&t);
-	  fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
-	  fprintf(log,"Los equipos han empatado\n");
+	t = time(NULL);
+	tm = *localtime(&t);
+	fprintf(log, "%d.%d.%d_%d:%d   ", tm.tm_year+1900, tm.tm_mon+1, tm.tm_mday, tm.tm_hour, tm.tm_min);
+	fprintf(log,"Los equipos han empatado\n");
+	fclose(log);
       printf("El juego ha terminado en empate\n");
   }
   free(estado);
